@@ -1,5 +1,3 @@
-### 6. Control de variables: Mariana
-
 correo = ""
 nombre_casa = ""
 casas = ""
@@ -10,7 +8,12 @@ contador_habitaciones = 4
 while True:
     if correo == "":
         nombre = input("Ingrese su nombre: ")
-        correo = input("Ingrese un correo electrónico: ")
+        while True:
+            correo = input("Ingrese un correo electrónico: ")
+            if "@" not in correo or "." not in correo:
+                print ("Correo electrónico inválido. Por favor, ingrese un correo electrónico válido.")
+            else:
+                break
         pin = input("Ingrese un PIN: ")
         print("Usuario registrado exitosamente.")
 
@@ -60,7 +63,7 @@ while True:
                 elif opcion_menu == 2:
                     nombre_casa = input("Ingrese el nombre de la casa: ")
                     contador_casas += 1
-                    casas += f"\n{contador_casas}. {nombre_casa}" # Agrega la habitación a la lista
+                    casas += f"\n{contador_casas}. {nombre_casa}"
                     print("Casa agregada exitosamente.")
                 elif opcion_menu == 3:
                     modo_usuario = False
@@ -70,7 +73,12 @@ while True:
             print("Usuario no encontrado. Por favor, regístrese.")
     elif opcion == "2":
         nombre = input("Ingrese su nombre: ")
-        correo = input("Ingrese su correo electrónico: ")
+        while True:
+            correo = input("Ingrese un correo electrónico: ")
+            if "@" not in correo or "." not in correo:
+                print ("Correo electrónico inválido. Por favor, ingrese un correo electrónico válido.")
+            else:
+                break
         pin = input("Ingrese un PIN: ")
         print("Usuario registrado exitosamente.")
     elif opcion == "3":
