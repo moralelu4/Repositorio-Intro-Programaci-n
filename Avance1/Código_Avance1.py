@@ -1,3 +1,5 @@
+### 6. Control de variables: Mariana
+
 correo = ""
 nombre_casa = ""
 casas = ""
