@@ -1,6 +1,6 @@
 usuarios = []
 
-def agregar_usuario():
+def agregarUsuario():
     nombre = input("Ingrese su nombre: ")
     while True:
         correo = input("Ingrese un correo electrónico: ")
@@ -13,8 +13,8 @@ def agregar_usuario():
     print("Usuario registrado exitosamente.")
 
 def agregarCasa(listaCasas):
-    nombre_casa = input("Ingrese el nombre de la casa: ")
-    listaCasas.append([nombre_casa,[]])
+    nombreCasa = input("Ingrese el nombre de la casa: ")
+    listaCasas.append([nombreCasa,[]])
     print("Casa agregada exitosamente.")
 
 def eliminarCasa(listaCasas):
@@ -39,12 +39,12 @@ def controlCasas(listaCasas):
         for casa in listaCasas:
             print(f"{listaCasas.index(casa)+1}. {casa [0]}")
         try:
-            casa_seleccionada =int(input("Seleccione una casa: "))
-            if casa_seleccionada in range (1,len(listaCasas)+1):
-                modo_casa = True
-                casaAUso = listaCasas [casa_seleccionada-1]
+            casaSeleccionada =int(input("Seleccione una casa: "))
+            if casaSeleccionada in range (1,len(listaCasas)+1):
+                modoCasa = True
+                casaAUso = listaCasas [casaSeleccionada-1]
                 print (f"Bienvenido a {casaAUso [0]}")
-                while modo_casa == True:
+                while modoCasa == True:
                     opcionCasa = input("\n1. Controlar instancias\n2. Añadir instancias\n3. Eliminar instancias\n4. Salir\nSeleccione una opción: ")
                     listaInstancias = casaAUso [1]
                     if opcionCasa == "1":
@@ -193,6 +193,8 @@ def controlCasas(listaCasas):
                                                             print("Por favor, ingrese una cerradura válida.")
                                                     except ValueError:
                                                         print("Por favor, ingrese un valor válido.")
+                                            else:
+                                                print("Esta instancia no tiene dispositivos añadidos.")
                                         elif opcionDispositivos == "4":
                                             if listaDispositivos != []:
                                                 for dispositivo in listaDispositivos:
@@ -208,7 +210,7 @@ def controlCasas(listaCasas):
                                                 except ValueError:
                                                     print("Por favor, ingrese un valor válido.")
                                             else:
-                                                print("La casa no tiene dispositivos habilitados todavía.")
+                                                print("Esta instancia no tiene dispositivos añadidos.")
                                         elif opcionDispositivos == "5":
                                             modoControlDispositivos = False
                                         else:
@@ -247,7 +249,7 @@ def controlCasas(listaCasas):
                         else:
                             print("La casa no tiene instancias habilitadas todavía.")
                     elif opcionCasa == "4":
-                        modo_casa = False
+                        modoCasa = False
                         break
                     else:
                         print("Por favor, seleccione una opción válida.")
@@ -258,7 +260,7 @@ def controlCasas(listaCasas):
     else:
         print ("No hay casas registradas. Por favor, ingrese una nueva.")
     
-def modo_usuario ():
+def modoUsuario ():
     for i in usuarios:
         print(f"{usuarios.index(i)+1}. {i [0]}")
     while True:
@@ -267,35 +269,35 @@ def modo_usuario ():
             if seleccionUsuario not in range (1, len(usuarios)+1):
                 print ("Por favor, seleccione un usuario válido.")
             else:
-                correo_match = usuarios [seleccionUsuario-1] [1]
-                pin_match = usuarios [seleccionUsuario-1] [2]
+                correoMatch = usuarios [seleccionUsuario-1] [1]
+                pinMatch = usuarios [seleccionUsuario-1] [2]
                 break
         except ValueError:
             print("Por favor, ingrese una opción válida.")
     while True:
-        correo_login = input("Ingrese su correo electrónico: ")
-        pin_login = input("Ingrese su PIN: ")
-        if correo_match == correo_login and pin_match == pin_login:
+        correoLogin = input("Ingrese su correo electrónico: ")
+        pinLogin = input("Ingrese su PIN: ")
+        if correoMatch == correoLogin and pinMatch == pinLogin:
             print("Inicio de sesión exitoso.")
-            usuario_def = usuarios [seleccionUsuario-1]
-            print (f"Bienvenido, {usuario_def [0]}\n")
+            usuarioDef = usuarios [seleccionUsuario-1]
+            print (f"Bienvenido, {usuarioDef [0]}\n")
             break
         else:
             print("Por favor, ingrese los datos correctos.")
-    while usuario_def != []:
-        casas_usuario = usuario_def[3]
-        opcion_usuario = input ("\nMenú principal: \n1. Controlar casa\n2. Registrar nueva casa\n3. Eliminar casa\n4. Salir\nSeleccione una opción: ")
-        if opcion_usuario == "1":
-            controlCasas(casas_usuario)
+    while usuarioDef != []:
+        casasUsuario = usuarioDef[3]
+        opcionUsuario = input ("\nMenú principal: \n1. Controlar casa\n2. Registrar nueva casa\n3. Eliminar casa\n4. Salir\nSeleccione una opción: ")
+        if opcionUsuario == "1":
+            controlCasas(casasUsuario)
             
-        elif opcion_usuario == "2":
-            agregarCasa(casas_usuario)
+        elif opcionUsuario == "2":
+            agregarCasa(casasUsuario)
             
-        elif opcion_usuario == "3":
-            eliminarCasa(casas_usuario)
+        elif opcionUsuario == "3":
+            eliminarCasa(casasUsuario)
 
-        elif opcion_usuario  == "4":
-            usuario_def[3] = casas_usuario
+        elif opcionUsuario  == "4":
+            usuarioDef[3] = casasUsuario
             break
 
         else:
@@ -303,12 +305,12 @@ def modo_usuario ():
 
 while True:
     if usuarios == []:
-        agregar_usuario()
+        agregarUsuario()
     opcion = input("\nBienvenido a la aplicación Smart Home\n1. Iniciar sesión\n2. Registrarse\n3. Salir\nSeleccione una opción: ")
     if opcion == "1":
-        modo_usuario()
+        modoUsuario()
     elif opcion == "2":
-        agregar_usuario()
+        agregarUsuario()
     elif opcion == "3":
         print("Saliendo de la aplicación.")
         break
