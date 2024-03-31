@@ -72,57 +72,70 @@ def controlCasas(listaCasas):
                                         print("Por favor, ingrese una opción válida.")
                                     print(listaDispositivos)
                                 elif opcionDispositivos == "2":
-                                    for dispositivo in listaDispositivos:
-                                        tipoDispositivo = dispositivo [0]
-                                        nombreDispositivo = dispositivo [1]
-                                        estadoDispositivo = dispositivo [2]
-                                        if tipoDispositivo == 1:
-                                            if estadoDispositivo == 1:
-                                                estadoDisplay = "Encendido"
-                                            if estadoDispositivo == 2:
-                                                estadoDisplay = "Apagado"
-                                        if tipoDispositivo == 2:
-                                            if estadoDispositivo == 1:
-                                                estadoDisplay = "Abierto"
-                                            if estadoDispositivo == 2:
-                                                estadoDisplay = "Cerrado"
-                                        print(f"{listaDispositivos.index(dispositivo)+1}. {nombreDispositivo} Estado: {estadoDisplay}")
-                                    dispositivoPedido = int(input("¿De cuál dispositivo de la lista desea cambiar el estado? "))
-                                    if dispositivoPedido in range(1,len(listaDispositivos)+1):
-                                        dispositivoSeleccionado = listaDispositivos [dispositivoPedido-1]
-                                        tipoDispositivoSeleccionado = dispositivoSeleccionado [0]
-                                        estadoDispositivoSeleccionado = dispositivoSeleccionado [2]
-                                        if tipoDispositivoSeleccionado == 1:
-                                            NuevoEstadoDispositivo = int(input("¿Desea encender o apagar el dispositivo: \n1.Encender\n2.Apagar\n"))
-                                            while True:
-                                                if NuevoEstadoDispositivo in range (1,3):
-                                                    estadoDispositivoSeleccionado = NuevoEstadoDispositivo
-                                                    break
-                                                else:
-                                                    print("Por favor, ingrese un estado válido.")
-                                        if tipoDispositivoSeleccionado == 2:
-                                            pinDispositivo = dispositivoSeleccionado [3]
-                                            while True:
-                                                pinComparacion = input("Por motivos de seguridad, para este proceso se le solicitará el pin de la cerradura: ")
-                                                if pinDispositivo == pinComparacion:
-                                                    break
-                                                else:
-                                                    print("Pin incorrecto. Por favor, ingrese el válido.")
-                                            NuevoEstadoDispositivo = int(input("¿Desea abrir o cerrar la cerradura: \n1.Abrir\n2.Cerrar\n"))
-                                            while True:
-                                                if NuevoEstadoDispositivo in range (1,3):
-                                                    estadoDispositivoSeleccionado = NuevoEstadoDispositivo
-                                                    break
-                                                else:
-                                                    print("Por favor, ingrese un estado válido.")
+                                    if listaDispositivos != []:
+                                        for dispositivo in listaDispositivos:
+                                            tipoDispositivo = dispositivo [0]
+                                            nombreDispositivo = dispositivo [1]
+                                            estadoDispositivo = dispositivo [2]
+                                            if tipoDispositivo == 1:
+                                                if estadoDispositivo == 1:
+                                                    estadoDisplay = "Encendido"
+                                                if estadoDispositivo == 2:
+                                                    estadoDisplay = "Apagado"
+                                            if tipoDispositivo == 2:
+                                                if estadoDispositivo == 1:
+                                                    estadoDisplay = "Abierto"
+                                                if estadoDispositivo == 2:
+                                                    estadoDisplay = "Cerrado"
+                                            print(f"{listaDispositivos.index(dispositivo)+1}. {nombreDispositivo} Estado: {estadoDisplay}")
+                                        dispositivoPedido = int(input("¿De cuál dispositivo de la lista desea cambiar el estado? "))
+                                        if dispositivoPedido in range(1,len(listaDispositivos)+1):
+                                            dispositivoSeleccionado = listaDispositivos [dispositivoPedido-1]
+                                            tipoDispositivoSeleccionado = dispositivoSeleccionado [0]
+                                            estadoDispositivoSeleccionado = dispositivoSeleccionado [2]
+                                            if tipoDispositivoSeleccionado == 1:
+                                                NuevoEstadoDispositivo = int(input("¿Desea encender o apagar el dispositivo: \n1.Encender\n2.Apagar\n"))
+                                                while True:
+                                                    if NuevoEstadoDispositivo in range (1,3):
+                                                        estadoDispositivoSeleccionado = NuevoEstadoDispositivo
+                                                        break
+                                                    else:
+                                                        print("Por favor, ingrese un estado válido.")
+                                            if tipoDispositivoSeleccionado == 2:
+                                                pinDispositivo = dispositivoSeleccionado [3]
+                                                while True:
+                                                    pinComparacion = input("Por motivos de seguridad, para este proceso se le solicitará el pin de la cerradura: ")
+                                                    if pinDispositivo == pinComparacion:
+                                                        break
+                                                    else:
+                                                        print("Pin incorrecto. Por favor, ingrese el válido.")
+                                                NuevoEstadoDispositivo = int(input("¿Desea abrir o cerrar la cerradura: \n1.Abrir\n2.Cerrar\n"))
+                                                while True:
+                                                    if NuevoEstadoDispositivo in range (1,3):
+                                                        estadoDispositivoSeleccionado = NuevoEstadoDispositivo
+                                                        break
+                                                    else:
+                                                        print("Por favor, ingrese un estado válido.")
+                                        else:
+                                            print("Por favor, ingrese un valor válido.")
                                     else:
-                                        print("Por favor, ingrese un valor válido.")
+                                        print("Esta instancia no tiene dispositivos añadidos.")
                                 elif opcionDispositivos == "3":
                                     #Pendiente. Encargado : Anderson 
                                     print("3. Actualización de pin de cerradura: SOLO CERRADURAS. Pedir index 2, nuevo index 2 y cambiarlo.")
                                 elif opcionDispositivos == "4":
-                                    #Pendiente. Encargado: Luis 
-                                    print("4. Eliminación de dispositivo: Misma valoración de listados + eliminación que en el caso de las instancias (Reciclar el código posible).")
+                                    if listaDispositivos != []:
+                                        for dipositivo in listaDispositivos:
+                                            print(f"{listaDispositivos.index(dipositivo)+1}. {dipositivo [1]}")
+                                        seleccionDispositivo = int(input("Seleccione cuál instancia desea eliminar: "))
+                                        dispositivoABorrar = listaDispositivos[seleccionDispositivo-1]
+                                        if seleccionDispositivo in range (1,len(listaDispositivos)+1):
+                                            print (f"Dipositivo {dispositivoABorrar [1]} eliminado.")
+                                            listaDispositivos.remove(dispositivoABorrar)
+                                        else:
+                                            print("Por favor, ingrese un dispositivo válido.")
+                                    else:
+                                        print("La casa no tiene dispositivos habilitados todavía.")
                                 elif opcionDispositivos == "5":
                                     modoControlDispositivos = False
                                 else:
@@ -175,7 +188,7 @@ def controlCasas(listaCasas):
     
 def modo_usuario ():
     for i in usuarios:
-        print(f"{usuarios.index(i)+1}. {i [0]}") #No está imprimiendo menú. Pero después sí reconoce el input al seleccionar usuario.
+        print(f"{usuarios.index(i)+1}. {i [0]}")
     while True:
         seleccionUsuario = int(input("Por favor, seleccione con cuál usuario piensa conectarse: "))
         if seleccionUsuario not in range (1, len(usuarios)+1):
@@ -196,11 +209,11 @@ def modo_usuario ():
             print("Por favor, ingrese los datos correctos.")
     while usuario_def != []:
         casas_usuario = usuario_def[3]
-        opcion_usuario = input ("\nMenú principal: \n1. Controlar casa\n2. Registrar nueva casa\n3. Eliminar casa\n4. Salir\n")
+        opcion_usuario = input ("\nMenú principal: \n1. Controlar casa\n2. Registrar nueva casa\n3. Eliminar casa\n4. Salir\nSeleccione una opción: ")
         if opcion_usuario == "1":
             controlCasas(casas_usuario)
             
-        elif opcion_usuario == "2": #Solo añade la primera adición. Más ejecuciones y no funca.
+        elif opcion_usuario == "2":
             agregarCasa(casas_usuario)
             
         elif opcion_usuario == "3":
