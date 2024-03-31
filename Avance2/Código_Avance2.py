@@ -27,6 +27,20 @@ def agregarCasa(listaCasas):
     print(listaCasas)
     print("Casa agregada exitosamente.")
 
+def eliminarCasa(listaCasas):
+    if listaCasas != []:
+        for casa in listaCasas:
+            print(f"{listaCasas.index(casa)+1}. {casa [0]}")
+        seleccionCasaPorBorrar = int(input("Por favor, seleccione cuál casa desea eliminar: "))
+        CasaABorrar = listaCasas [seleccionCasaPorBorrar-1]
+        if seleccionCasaPorBorrar in range (1,len(listaCasas)+1):
+            print (f"Casa {CasaABorrar [0]} eliminada.")
+            listaCasas.remove(CasaABorrar)
+        else:
+            print("Por favor, ingrese una instancia válida.")
+    else:
+        print("La casa no tiene instancias habilitadas todavía.")
+
 def controlCasas(listaCasas):
     if listaCasas != []:
         for casa in listaCasas:
@@ -145,9 +159,16 @@ def controlCasas(listaCasas):
                     else:
                         print("No tiene instancias agregadas.\nPor favor, agregue una instancia válida.")
                 elif opcionCasa == "2":
-                    nombreInstancia = input ("Por favor, ingrese el nombre de la instancia que desea agregar: ")
-                    #Pendiente: Validar que no haya repeticiones. Encargada: Mariana. 
-                    listaInstancias.append ([nombreInstancia,[]])
+                    nombresInstancias = []
+                    for instancia in listaInstancias:
+                        nombresInstancias.append(instancia [0])
+                    while True:
+                        nombreInstancia = input ("Por favor, ingrese el nombre de la instancia que desea agregar: ")
+                        if nombreInstancia not in nombresInstancias: 
+                            listaInstancias.append ([nombreInstancia,[]])
+                            break
+                        else:
+                            print("Este nombre ya está asignado a una instancia.\nPor favor, pruebe con otro nombre.")
                 elif opcionCasa == "3":
                     if listaInstancias != []:
                         for instancia in listaInstancias:
@@ -217,7 +238,7 @@ def modo_usuario ():
             agregarCasa(casas_usuario)
             
         elif opcion_usuario == "3":
-            print("Opción 3. Eliminar casas.")
+            eliminarCasa(casas_usuario)
 
         elif opcion_usuario  == "4":
             usuario_def[3] = casas_usuario
