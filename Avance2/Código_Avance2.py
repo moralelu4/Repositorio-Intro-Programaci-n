@@ -117,9 +117,14 @@ def controlCasas(listaCasas):
                                                         estadoDispositivoSeleccionado = dispositivoSeleccionado [2]
                                                         if tipoDispositivoSeleccionado == 1:
                                                             try:
-                                                                NuevoEstadoDispositivo = int(input("¿Desea encender o apagar el dispositivo: \n1.Encender\n2.Apagar\n"))
-                                                                if NuevoEstadoDispositivo in [1, 2]:
-                                                                    estadoDispositivoSeleccionado = NuevoEstadoDispositivo
+                                                                nuevoEstadoDispositivo = int(input("¿Desea encender o apagar el dispositivo? \n1.Encender\n2.Apagar\n"))
+                                                                if nuevoEstadoDispositivo in [1, 2]:
+                                                                    dispositivoSeleccionado [2] = nuevoEstadoDispositivo
+                                                                    if nuevoEstadoDispositivo == 1:
+                                                                        nuevoEstadoDisplay = "Encendido"
+                                                                    if nuevoEstadoDispositivo == 2:
+                                                                        nuevoEstadoDisplay = "Apagado"
+                                                                    print(f"Ahora, el dispositivo {dispositivoSeleccionado [1]} está: {nuevoEstadoDisplay}")
                                                                 else:
                                                                     print("Por favor, ingrese un estado válido.")
                                                             except ValueError:
@@ -133,9 +138,14 @@ def controlCasas(listaCasas):
                                                                 else:
                                                                     print("Pin incorrecto. Por favor, ingrese el válido.")
                                                             try:
-                                                                NuevoEstadoDispositivo = int(input("¿Desea abrir o cerrar la cerradura: \n1.Abrir\n2.Cerrar\n"))
-                                                                if NuevoEstadoDispositivo in [1, 2]:
-                                                                    estadoDispositivoSeleccionado = NuevoEstadoDispositivo
+                                                                nuevoEstadoDispositivo = int(input("¿Desea abrir o cerrar la cerradura? \n1.Abrir\n2.Cerrar\n"))
+                                                                if nuevoEstadoDispositivo in [1, 2]:
+                                                                    dispositivoSeleccionado [2] = nuevoEstadoDispositivo
+                                                                    if nuevoEstadoDispositivo == 1:
+                                                                        nuevoEstadoDisplay = "Abierto"
+                                                                    if nuevoEstadoDispositivo == 2:
+                                                                        nuevoEstadoDisplay = "Cerrado"
+                                                                    print(f"Ahora, el dispositivo {dispositivoSeleccionado [1]} está: {nuevoEstadoDisplay}")
                                                                 else:
                                                                     print("Por favor, ingrese un estado válido.")
                                                             except ValueError:
@@ -157,29 +167,32 @@ def controlCasas(listaCasas):
                                                     if tipoDispositivo == 2:
                                                         listaCerraduras.append(dispositivo)
                                                         print(f"{listaCerraduras.index(dispositivo)+1}. {nombreDispositivo}")
-                                                try:
-                                                    cerraduraPedida = int(input("¿De cuál cerradura de la lista desea cambiar el pin? "))
-                                                    if cerraduraPedida in range(1,len(listaCerraduras)+1):
-                                                        cerraduraSeleccionada = listaCerraduras [cerraduraPedida-1]
-                                                        pinCerraduraSeleccionada = cerraduraSeleccionada [3]
-                                                        listaDispositivos.remove(cerraduraSeleccionada)
-                                                        while True:
-                                                            pinComparacion = input("Por motivos de seguridad, para este proceso se le solicitará el pin de la cerradura: ")
-                                                            if pinCerraduraSeleccionada == pinComparacion:
-                                                                print("Pin válido")
-                                                                nuevoPin = input("Por favor, asigne un nuevo pin de 4 dígitos o mayor extensión a la cerradura: ")
-                                                                if len(nuevoPin) >= 4:
-                                                                    cerraduraSeleccionada [3] = nuevoPin
-                                                                    listaDispositivos.append(cerraduraSeleccionada)
-                                                                    break
+                                                if listaCerraduras == []:
+                                                    print("No hay cerraduras conectadas todavía.")
+                                                else:
+                                                    try:
+                                                        cerraduraPedida = int(input("¿De cuál cerradura de la lista desea cambiar el pin? "))
+                                                        if cerraduraPedida in range(1,len(listaCerraduras)+1):
+                                                            cerraduraSeleccionada = listaCerraduras [cerraduraPedida-1]
+                                                            pinCerraduraSeleccionada = cerraduraSeleccionada [3]
+                                                            listaDispositivos.remove(cerraduraSeleccionada)
+                                                            while True:
+                                                                pinComparacion = input("Por motivos de seguridad, para este proceso se le solicitará el pin de la cerradura: ")
+                                                                if pinCerraduraSeleccionada == pinComparacion:
+                                                                    print("Pin válido")
+                                                                    nuevoPin = input("Por favor, asigne un nuevo pin de 4 dígitos o mayor extensión a la cerradura: ")
+                                                                    if len(nuevoPin) >= 4:
+                                                                        cerraduraSeleccionada [3] = nuevoPin
+                                                                        listaDispositivos.append(cerraduraSeleccionada)
+                                                                        break
+                                                                    else:
+                                                                        print("Por favor, asígnele un pin de mayor extensión")
                                                                 else:
-                                                                    print("Por favor, asígnele un pin de mayor extensión")
-                                                            else:
-                                                                print("Pin incorrecto. Por favor, ingrese el válido.")
-                                                    else:
-                                                        print("Por favor, ingrese una cerradura válida.")
-                                                except ValueError:
-                                                    print("Por favor, ingrese un valor válido.")
+                                                                    print("Pin incorrecto. Por favor, ingrese el válido.")
+                                                        else:
+                                                            print("Por favor, ingrese una cerradura válida.")
+                                                    except ValueError:
+                                                        print("Por favor, ingrese un valor válido.")
                                         elif opcionDispositivos == "4":
                                             if listaDispositivos != []:
                                                 for dispositivo in listaDispositivos:
