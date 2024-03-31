@@ -48,7 +48,7 @@ def controlCasas(listaCasas):
         casa_seleccionada =int(input("Seleccione una casa: "))
         if casa_seleccionada in range (1,len(listaCasas)+1):
             modo_casa = True
-            casaAUso = listaCasas [casa_seleccionada-1] #A ver cómo retorno de acá.
+            casaAUso = listaCasas [casa_seleccionada-1]
             print (f"Bienvenido a {casaAUso [0]}")
             while modo_casa == True:
                 #[nombrecasa, [nombrehabitacion [nombredispositivo,estadodispositivo]], [casa2, [habitacion, [nombredispositivo, estadodispositivo]]]]
@@ -135,8 +135,34 @@ def controlCasas(listaCasas):
                                     else:
                                         print("Esta instancia no tiene dispositivos añadidos.")
                                 elif opcionDispositivos == "3":
-                                    #Pendiente. Encargado : Anderson 
-                                    print("3. Actualización de pin de cerradura: SOLO CERRADURAS. Pedir index 2, nuevo index 2 y cambiarlo.")
+                                    if listaDispositivos != []:
+                                        listaCerraduras = []
+                                        for dispositivo in listaDispositivos:
+                                            tipoDispositivo = dispositivo [0]
+                                            nombreDispositivo = dispositivo [1]
+                                            if tipoDispositivo == 1:
+                                                pass
+                                            if tipoDispositivo == 2:
+                                                listaCerraduras.append(dispositivo)
+                                                print(f"{listaCerraduras.index(dispositivo)+1}. {nombreDispositivo}")
+                                        cerraduraPedida = int(input("¿De cuál cerradura de la lista desea cambiar el pin? "))
+                                        if cerraduraPedida in range(1,len(listaCerraduras)+1):
+                                            cerraduraSeleccionada = listaCerraduras [cerraduraPedida-1]
+                                            pinCerraduraSeleccionada = cerraduraSeleccionada [3]
+                                            listaDispositivos.remove(cerraduraSeleccionada)
+                                            while True:
+                                                pinComparacion = input("Por motivos de seguridad, para este proceso se le solicitará el pin de la cerradura: ")
+                                                if pinCerraduraSeleccionada == pinComparacion:
+                                                    print("Pin válido")
+                                                    nuevoPin = input ("Por favor, asigne un nuevo pin de 4 dígitos o mayor extensión a la cerradura: ")
+                                                    if len(nuevoPin) >= 4:
+                                                        cerraduraSeleccionada [3] = nuevoPin
+                                                        listaDispositivos.append(cerraduraSeleccionada)
+                                                        break
+                                                    else:
+                                                        print("Por favor, asígnele un pin de mayor extensión")
+                                                else:
+                                                    print("Pin incorrecto. Por favor, ingrese el válido.")
                                 elif opcionDispositivos == "4":
                                     if listaDispositivos != []:
                                         for dipositivo in listaDispositivos:
@@ -191,21 +217,6 @@ def controlCasas(listaCasas):
             print ("Por favor, seleccione una casa válida.")
     else:
         print ("No hay casas registradas. Por favor, ingrese una nueva.")
-
-
-#def gestionCasas(modo_usuario):
-#    while modo_usuario == True:
-#        print("\nMenú principal:")
-#        print("1. Ver casas registradas")
-#        print("2. Registrar nueva casa")
-#        print("3. Salir")
-#        opcion_menu = int(input("Seleccione una opción: "))
-#        if opcion_menu == 1:
-#            controlCasas()
-#        elif opcion_menu == 2:
-#            agregarCasa()
-#        elif opcion_menu == 3:
-#            modo_usuario = False
     
 def modo_usuario ():
     for i in usuarios:
