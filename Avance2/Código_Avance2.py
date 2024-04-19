@@ -109,7 +109,7 @@ def agregarDispositivos (listaDispositivos, instanciaAUso,data):
     with open('db.json', 'w', encoding='utf-8') as f:
         json.dump(data, f, indent=4)
 
-def actualizacionDispositivo(listaDispositivos, instanciaAUso, data): #Ver por qué no da opción de cambiar estado.
+def actualizacionDispositivo(listaDispositivos, instanciaAUso, data):
     if listaDispositivos != []:
         for dispositivo in listaDispositivos:
             nombreDispositivo = dispositivo ["nombreDispositivo"]
@@ -171,37 +171,28 @@ def actualizacionDispositivo(listaDispositivos, instanciaAUso, data): #Ver por q
 
 def actualizacionPinCerradura(listaDispositivos, instanciaAUso, data):
     if listaDispositivos != []:
-        listaCerraduras = []
-        for dispositivo in listaDispositivos:
-            tipoDispositivo = dispositivo [0]
-            nombreDispositivo = dispositivo [1]
-            if tipoDispositivo == 1:
-                pass
-            if tipoDispositivo == 2:
-                listaCerraduras.append(dispositivo)
-                print(f"{listaCerraduras.index(dispositivo)+1}. {nombreDispositivo}")
-        if listaCerraduras == []:
+        listaCerraduras = [dispositivo for dispositivo in listaDispositivos if dispositivo['tipoDispositivo'] == 'Cerradura']
+        for i, cerradura in enumerate(listaCerraduras):
+            print(f"{i+1}. {cerradura['nombreDispositivo']}")
+        if not listaCerraduras:
             print("No hay cerraduras conectadas todavía.")
         else:
             try:
-                cerraduraPedida = input("¿De cuál cerradura de la lista desea cambiar el pin? ")
-                if cerraduraPedida in range(1,len(listaCerraduras)+1):
-                    cerraduraSeleccionada = listaCerraduras [cerraduraPedida-1]
-                    pinCerraduraSeleccionada = cerraduraSeleccionada [3]
-                    listaDispositivos.remove(cerraduraSeleccionada)
-                    while True:
-                        pinComparacion = input("Por motivos de seguridad, para este proceso se le solicitará el pin de la cerradura: ")
-                        if pinCerraduraSeleccionada == pinComparacion:
-                            print("Pin válido")
-                            nuevoPin = input("Por favor, asigne un nuevo pin de 4 dígitos o mayor extensión a la cerradura: ")
-                            if len(nuevoPin) >= 4:
-                                cerraduraSeleccionada [3] = nuevoPin
-                                listaDispositivos.append(cerraduraSeleccionada)
-                                break
-                            else:
-                                print("Por favor, asígnele un pin de mayor extensión")
+                cerraduraPedida = int(input("¿De cuál cerradura de la lista desea cambiar el pin? "))
+                if 1 <= cerraduraPedida <= len(listaCerraduras):
+                    cerraduraSeleccionada = listaCerraduras[cerraduraPedida-1]
+                while True:
+                    pinComparacion = input("Por motivos de seguridad, para este proceso se le solicitará el pin de la cerradura: ")
+                    if cerraduraSeleccionada['pinCerradura'] == pinComparacion:
+                        print("Pin válido")
+                        nuevoPin = input("Por favor, asigne un nuevo pin de 4 dígitos o mayor extensión a la cerradura: ")
+                        if len(nuevoPin) >= 4:
+                            cerraduraSeleccionada['pinCerradura'] = nuevoPin
+                            break
                         else:
-                            print("Pin incorrecto. Por favor, ingrese el válido.")
+                            print("Por favor, asígnele un pin de mayor extensión")
+                    else:
+                        print("Pin incorrecto. Por favor, ingrese el válido.")
                 else:
                     print("Por favor, ingrese una cerradura válida.")
             except ValueError:
@@ -393,3 +384,4 @@ while True:
         print("Saliendo de la aplicación.")
         break
     else:
+        print("Opción inválida. Inténtelo de nuevo.")

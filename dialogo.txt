@@ -1,0 +1,8 @@
+Este es un archivo de pruebas
+que tiene como objetivo contar
+la cantidad de coincidencias de
+una palabra en el texto, por
+lo que el usuario ingresa la
+palabra que desea buscar y
+el programa debe buscar sus
+coincidencias.
