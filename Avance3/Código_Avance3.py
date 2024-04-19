@@ -1,5 +1,3 @@
-###Revisar formato de los json.dump
-
 import os
 import json
 
@@ -30,7 +28,7 @@ def agregarUsuario():
 
 def agregarCasa(usuarioDef,base):
     nombreCasa = input("Ingrese el nombre de la casa: ")
-    usuarioDef['casas'].append({"nombreCasa": nombreCasa, "habitaciones": []})
+    usuarioDef['casas'].append({"nombreCasa": nombreCasa, "instancias": []})
     print("Casa agregada exitosamente.")
     with open('db.json', 'w', encoding='utf-8') as json_file:
         json.dump(base, json_file, indent=4)
@@ -261,7 +259,7 @@ def controlCasas(casasUsuario, usuarioDef):
                 print(f"Bienvenido a {casaAUso['nombreCasa']}")
                 while modoCasa == True:
                     opcionCasa = input("\n1. Controlar instancias\n2. Añadir instancias\n3. Eliminar instancias\n4. Salir\nSeleccione una opción: ")
-                    listaInstancias = casaAUso['habitaciones']
+                    listaInstancias = casaAUso['instancias']
                     if opcionCasa == "1":
                         controlInstancias(listaInstancias)
                     elif opcionCasa == "2":
@@ -287,15 +285,25 @@ def controlCasas(casasUsuario, usuarioDef):
                             for i, instancia in enumerate(listaInstancias, start=1):
                                 print(f"{i}. {instancia['nombreInstancia']}")
                             try:
-                                seleccionInstancia = int(input("Seleccione cuál instancia desea eliminar: "))
-                                if seleccionInstancia in range(1, len(listaInstancias)+1):
-                                    instanciaABorrar = listaInstancias[seleccionInstancia-1]
-                                    print(f"Instancia {instanciaABorrar['nombreInstancia']} eliminada.")
-                                    listaInstancias.remove(instanciaABorrar)
-                                    with open('db.json', 'w') as f:
-                                        json.dump(casasUsuario, f, indent=4)
-                                else:
-                                    print("Por favor, ingrese una instancia válida.")
+                                while True:
+                                    seleccionInstancia = int(input("Seleccione cuál instancia desea eliminar: "))
+                                    if seleccionInstancia in range(1, len(listaInstancias)+1):
+                                        instanciaABorrar = listaInstancias[seleccionInstancia-1]
+                                        print(f"Instancia {instanciaABorrar['nombreInstancia']} eliminada.")
+                                        listaInstancias.remove(instanciaABorrar)
+                                        with open('db.json', 'r') as f:
+                                            data = json.load(f)
+                                        # Assuming usuarios is a list of dictionaries and each dictionary represents a user
+                                        for user in data['usuarios']:
+                                            if user['nombre'] == usuarioDef['nombre']:
+                                                for casa in user['casas']:
+                                                    if casa['nombreCasa'] == casaAUso['nombreCasa']:
+                                                        casa['instancias'] = listaInstancias
+                                        with open('db.json', 'w') as f:
+                                            json.dump(data, f, indent=4)
+                                        break
+                                    else:
+                                        print("Por favor, ingrese una instancia válida.")
                             except ValueError:
                                 print("Por favor, ingrese un valor válido.")
                         else:
