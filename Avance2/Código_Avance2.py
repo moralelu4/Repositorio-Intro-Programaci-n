@@ -1,16 +1,6 @@
-import os
-import json
-
-db= "db.json"
-if not os.path.exists(db):
-    with open(db, 'w', encoding='utf-8') as baseDatos:
-        json.dump({}, baseDatos)
-with open(db, "r", encoding='utf-8') as baseDatos:
-    base= json.load(baseDatos)
+usuarios = []
 
 def agregarUsuario():
-    with open(db, "r", encoding='utf-8') as baseDatos:
-        base= json.load(baseDatos)
     nombre = input("Ingrese su nombre: ")
     while True:
         correo = input("Ingrese un correo electrónico: ")
@@ -19,83 +9,54 @@ def agregarUsuario():
         else:
             break
     pin = input("Ingrese un PIN: ")
-    nuevousuario = {"nombre": nombre, "correo": correo, "pin": pin, "casas":[]}
-    base["usuarios"] = base.get("usuarios", []) + [nuevousuario]
-    with open(db, "w", encoding='utf-8') as json_file:
-        json.dump(base, json_file, indent=4)
-        print(str(json_file)) ##Debugging
+    usuarios.append([nombre,correo,pin,[]])
     print("Usuario registrado exitosamente.")
 
-def agregarCasa(usuarioDef,base):
+def agregarCasa(listaCasas):
     nombreCasa = input("Ingrese el nombre de la casa: ")
-    usuarioDef['casas'].append({"nombreCasa": nombreCasa, "instancias": []})
+    listaCasas.append([nombreCasa,[]])
     print("Casa agregada exitosamente.")
-    with open('db.json', 'w', encoding='utf-8') as json_file:
-        json.dump(base, json_file, indent=4)
 
-def eliminarCasa(usuarioDef):
-    listaCasas = usuarioDef['casas']
-
+def eliminarCasa(listaCasas):
     if listaCasas != []:
-        for i, casa in enumerate(listaCasas, start=1):
-            print(f"{i}. {casa['nombreCasa']}")
+        for casa in listaCasas:
+            print(f"{listaCasas.index(casa)+1}. {casa [0]}")
         try:
             seleccionCasaPorBorrar = int(input("Por favor, seleccione cuál casa desea eliminar: "))
-            if seleccionCasaPorBorrar in range(1, len(listaCasas)+1):
-                casaABorrar = listaCasas[seleccionCasaPorBorrar-1]
-                print(f"Casa {casaABorrar['nombreCasa']} eliminada.")
-                listaCasas.remove(casaABorrar)
-                with open('db.json', 'r', encoding='utf-8') as f:
-                    data = json.load(f)
-                for usuario in data['usuarios']:
-                    if usuario['nombre'] == usuarioDef['nombre']:
-                        usuario['casas'] = listaCasas
-                with open('db.json', 'w', encoding='utf-8') as f:
-                    json.dump(data, f, indent=4)
+            CasaABorrar = listaCasas [seleccionCasaPorBorrar-1]
+            if seleccionCasaPorBorrar in range (1,len(listaCasas)+1):
+                print (f"Casa {CasaABorrar [0]} eliminada.")
+                listaCasas.remove(CasaABorrar)
             else:
                 print("Por favor, ingrese una casa válida.")
         except ValueError:
             print("Por favor, ingrese una opción válida.")
     else:
         print("No hay casas registradas todavía.")
-
-def agregarDispositivos (listaDispositivos, instanciaAUso,data):
-    print(listaDispositivos)
+def agregarDispositivos (listaDispositivos):
     try:
-        tipoDispositivoAgregar = input("¿De qué tipo será el dispositivo por agregar?\n1. Electrónico (Apagador, tomacorriente...)\n2. Cerradura:\n")
-        if tipoDispositivoAgregar in ["1", "2"]:
-            if tipoDispositivoAgregar == "1":
-                tipoDispositivoAgregar = "Electrónico"
+        tipoDispositivoAgregar = int(input("¿De qué tipo será el dispositivo por agregar?\n1. Electrónico (Apagador, tomacorriente...)\n2. Cerradura:\n"))
+        if tipoDispositivoAgregar in [1, 2]:
+            if tipoDispositivoAgregar == 1:
                 nombreDispositivoAgregar = input("¿Cuál nombre le asignará al dispositivo? ")
                 try:
-                    estadoDispositivoAgregar = input("¿El dispositivo se encuentra encendido o apagado?\n1.Encendido\n2.Apagado\n") #Cambiar etiquetado de estados.
-                    if estadoDispositivoAgregar in ["1", "2"]:
-                        if estadoDispositivoAgregar == "1":
-                            estadoDispositivoAgregar = "Encendido"
-                        if estadoDispositivoAgregar == "2":
-                            estadoDispositivoAgregar = "Apagado"
-                        listaDispositivos.append({"tipoDispositivo": tipoDispositivoAgregar, "nombreDispositivo": nombreDispositivoAgregar, "estadoDispositivo": estadoDispositivoAgregar})
-                        print ("Dispositivo electrónico agregado exitosamente.")
+                    estadoDispositivoAgregar = int(input("¿El dispositivo se encuentra encendido o apagado?\n1.Encendido\n2.Apagado\n"))
+                    if estadoDispositivoAgregar in [1, 2]:
+                        listaDispositivos.append([tipoDispositivoAgregar,nombreDispositivoAgregar,estadoDispositivoAgregar])
                     else:
                         print("Por favor, ingrese un estado válido.")
                 except ValueError:
                     print("Por favor, ingrese un estado válido.")
-            elif tipoDispositivoAgregar == "2":
-                tipoDispositivoAgregar = "Cerradura"
+            elif tipoDispositivoAgregar == 2:
                 nombreCerraduraAgregar = input("¿Cuál nombre le asignará a la cerradura? ")
                 try:
-                    estadoCerraduraAgregar = input("¿La cerradura se encuentra abierta o cerrada?\n1.Abierta\n2.Cerrada\n") ###Cambiar etiquetado de estados
-                    if estadoCerraduraAgregar in ["1", "2"]:
-                        if estadoCerraduraAgregar == "1":
-                            estadoCerraduraAgregar = "Abierta"
-                        if estadoCerraduraAgregar == "2":
-                            estadoCerraduraAgregar = "Cerrada"
+                    estadoCerraduraAgregar = int(input("¿La cerradura se encuentra abierta o cerrada?\n1.Abierta\n2.Cerrada\n"))
+                    if estadoCerraduraAgregar in [1, 2]:
                         while True:
                             pinCerradura = input ("Por favor, asígnele un pin de 4 dígitos o mayor extensión a la cerradura: ")
                             if len(pinCerradura) >= 4:
-                                #listaDispositivos.append([tipoDispositivoAgregar,nombreCerraduraAgregar,estadoCerraduraAgregar,pinCerradura])
-                                listaDispositivos.append({"tipoDispositivo": tipoDispositivoAgregar, "nombreDispositivo": nombreCerraduraAgregar, "estadoDispositivo": estadoCerraduraAgregar, "pinCerradura": pinCerradura})
-                                print ("Cerradura agregada exitosamente.")
+                                listaDispositivos.append([tipoDispositivoAgregar,nombreCerraduraAgregar,estadoCerraduraAgregar,pinCerradura])
+                                break
                             else:
                                 print("Por favor, asígnele un pin de mayor extensión")
                     else:
@@ -104,41 +65,46 @@ def agregarDispositivos (listaDispositivos, instanciaAUso,data):
                     print("Por favor, ingrese un estado válido.")
     except ValueError:
         print("Por favor, ingrese una opción válida.")
-    if instanciaAUso:
-        instanciaAUso['dispositivos'] = listaDispositivos
-    with open('db.json', 'w', encoding='utf-8') as f:
-        json.dump(data, f, indent=4)
 
-def actualizacionDispositivo(listaDispositivos, instanciaAUso, data):
+def actualizacionDispositivo(listaDispositivos):
     if listaDispositivos != []:
         for dispositivo in listaDispositivos:
-            nombreDispositivo = dispositivo ["nombreDispositivo"]
-            estadoDispositivo = dispositivo ["estadoDispositivo"]
-            print(f"{listaDispositivos.index(dispositivo)+1}. {nombreDispositivo} Estado: {estadoDispositivo}")
+            tipoDispositivo = dispositivo [0]
+            nombreDispositivo = dispositivo [1]
+            estadoDispositivo = dispositivo [2]
+            if tipoDispositivo == 1:
+                if estadoDispositivo == 1:
+                    estadoDisplay = "Encendido"
+                if estadoDispositivo == 2:
+                    estadoDisplay = "Apagado"
+            if tipoDispositivo == 2:
+                if estadoDispositivo == 1:
+                    estadoDisplay = "Abierto"
+                if estadoDispositivo == 2:
+                    estadoDisplay = "Cerrado"
+            print(f"{listaDispositivos.index(dispositivo)+1}. {nombreDispositivo} Estado: {estadoDisplay}")
         try:
             dispositivoPedido = int(input("¿De cuál dispositivo de la lista desea cambiar el estado? "))
             if dispositivoPedido in range(1,len(listaDispositivos)+1):
                 dispositivoSeleccionado = listaDispositivos [dispositivoPedido-1]
-                tipoDispositivoSeleccionado = dispositivoSeleccionado ["tipoDispositivo"]
-                estadoDispositivoSeleccionado = dispositivoSeleccionado ["estadoDispositivo"]
-                print(dispositivoSeleccionado)
-                print(estadoDispositivoSeleccionado)
-                if tipoDispositivoSeleccionado == 'Electrónico':
+                tipoDispositivoSeleccionado = dispositivoSeleccionado [0]
+                estadoDispositivoSeleccionado = dispositivoSeleccionado [2]
+                if tipoDispositivoSeleccionado == 1:
                     try:
-                        nuevoEstadoDispositivo = input("¿Desea encender o apagar el dispositivo? \n1.Encender\n2.Apagar\n")
-                        if nuevoEstadoDispositivo in ["1", "2"]:
-                            if nuevoEstadoDispositivo == "1":
-                                nuevoEstadoDispositivo = "Encendido"
-                            if nuevoEstadoDispositivo == "2":
-                                nuevoEstadoDispositivo = "Apagado"
-                            dispositivoSeleccionado ["estadoDispositivo"] = nuevoEstadoDispositivo
-                            print(f"Ahora, el dispositivo {dispositivoSeleccionado['nombreDispositivo']} está: {nuevoEstadoDispositivo}")
+                        nuevoEstadoDispositivo = int(input("¿Desea encender o apagar el dispositivo? \n1.Encender\n2.Apagar\n"))
+                        if nuevoEstadoDispositivo in [1, 2]:
+                            dispositivoSeleccionado [2] = nuevoEstadoDispositivo
+                            if nuevoEstadoDispositivo == 1:
+                                nuevoEstadoDisplay = "Encendido"
+                            if nuevoEstadoDispositivo == 2:
+                                nuevoEstadoDisplay = "Apagado"
+                            print(f"Ahora, el dispositivo {dispositivoSeleccionado [1]} está: {nuevoEstadoDisplay}")
                         else:
                             print("Por favor, ingrese un estado válido.")
                     except ValueError:
                         print("Por favor, ingrese un estado válido.")
-                if tipoDispositivoSeleccionado == 'Cerradura':
-                    pinDispositivo = dispositivoSeleccionado ["pinCerradura"]
+                if tipoDispositivoSeleccionado == 2:
+                    pinDispositivo = dispositivoSeleccionado [3]
                     while True:
                         pinComparacion = input("Por motivos de seguridad, para este proceso se le solicitará el pin de la cerradura: ")
                         if pinDispositivo == pinComparacion:
@@ -146,116 +112,107 @@ def actualizacionDispositivo(listaDispositivos, instanciaAUso, data):
                         else:
                             print("Pin incorrecto. Por favor, ingrese el válido.")
                     try:
-                        nuevoEstadoDispositivo = input("¿Desea abrir o cerrar la cerradura? \n1.Abrir\n2.Cerrar\n")
-                        if nuevoEstadoDispositivo in ["1", "2"]:
-                            if nuevoEstadoDispositivo == "1":
-                                nuevoEstadoDispositivo = "Abierto"
-                            if nuevoEstadoDispositivo == "2":
-                                nuevoEstadoDispositivo = "Cerrado"
-                            dispositivoSeleccionado ["estadoDispositivo"] = nuevoEstadoDispositivo
-                            print(f"Ahora, el dispositivo {dispositivoSeleccionado ['nombreDispositivo']} está: {nuevoEstadoDispositivo}")
+                        nuevoEstadoDispositivo = int(input("¿Desea abrir o cerrar la cerradura? \n1.Abrir\n2.Cerrar\n"))
+                        if nuevoEstadoDispositivo in [1, 2]:
+                            dispositivoSeleccionado [2] = nuevoEstadoDispositivo
+                            if nuevoEstadoDispositivo == 1:
+                                nuevoEstadoDisplay = "Abierto"
+                            if nuevoEstadoDispositivo == 2:
+                                nuevoEstadoDisplay = "Cerrado"
+                            print(f"Ahora, el dispositivo {dispositivoSeleccionado [1]} está: {nuevoEstadoDisplay}")
                         else:
                             print("Por favor, ingrese un estado válido.")
                     except ValueError:
                         print("Por favor, ingrese un estado válido.")
-            else:
-                print("Por favor, ingrese un valor válido.")
+                else:
+                    print("Por favor, ingrese un valor válido.")
         except ValueError:
             print("Por favor, ingrese un valor válido.")
     else:
         print("Esta instancia no tiene dispositivos añadidos.")
-    if instanciaAUso:
-        instanciaAUso['dispositivos'] = listaDispositivos
-    with open('db.json', 'w', encoding='utf-8') as f:
-        json.dump(data, f, indent=4)
 
-def actualizacionPinCerradura(listaDispositivos, instanciaAUso, data):
+def actualizacionPinCerradura(listaDispositivos):
     if listaDispositivos != []:
-        listaCerraduras = [dispositivo for dispositivo in listaDispositivos if dispositivo['tipoDispositivo'] == 'Cerradura']
-        for i, cerradura in enumerate(listaCerraduras):
-            print(f"{i+1}. {cerradura['nombreDispositivo']}")
-        if not listaCerraduras:
+        listaCerraduras = []
+        for dispositivo in listaDispositivos:
+            tipoDispositivo = dispositivo [0]
+            nombreDispositivo = dispositivo [1]
+            if tipoDispositivo == 1:
+                pass
+            if tipoDispositivo == 2:
+                listaCerraduras.append(dispositivo)
+                print(f"{listaCerraduras.index(dispositivo)+1}. {nombreDispositivo}")
+        if listaCerraduras == []:
             print("No hay cerraduras conectadas todavía.")
         else:
             try:
                 cerraduraPedida = int(input("¿De cuál cerradura de la lista desea cambiar el pin? "))
-                if 1 <= cerraduraPedida <= len(listaCerraduras):
-                    cerraduraSeleccionada = listaCerraduras[cerraduraPedida-1]
-                while True:
-                    pinComparacion = input("Por motivos de seguridad, para este proceso se le solicitará el pin de la cerradura: ")
-                    if cerraduraSeleccionada['pinCerradura'] == pinComparacion:
-                        print("Pin válido")
-                        nuevoPin = input("Por favor, asigne un nuevo pin de 4 dígitos o mayor extensión a la cerradura: ")
-                        if len(nuevoPin) >= 4:
-                            cerraduraSeleccionada['pinCerradura'] = nuevoPin
-                            break
+                if cerraduraPedida in range(1,len(listaCerraduras)+1):
+                    cerraduraSeleccionada = listaCerraduras [cerraduraPedida-1]
+                    pinCerraduraSeleccionada = cerraduraSeleccionada [3]
+                    listaDispositivos.remove(cerraduraSeleccionada)
+                    while True:
+                        pinComparacion = input("Por motivos de seguridad, para este proceso se le solicitará el pin de la cerradura: ")
+                        if pinCerraduraSeleccionada == pinComparacion:
+                            print("Pin válido")
+                            nuevoPin = input("Por favor, asigne un nuevo pin de 4 dígitos o mayor extensión a la cerradura: ")
+                            if len(nuevoPin) >= 4:
+                                cerraduraSeleccionada [3] = nuevoPin
+                                listaDispositivos.append(cerraduraSeleccionada)
+                                break
+                            else:
+                                print("Por favor, asígnele un pin de mayor extensión")
                         else:
-                            print("Por favor, asígnele un pin de mayor extensión")
-                    else:
-                        print("Pin incorrecto. Por favor, ingrese el válido.")
+                            print("Pin incorrecto. Por favor, ingrese el válido.")
                 else:
                     print("Por favor, ingrese una cerradura válida.")
             except ValueError:
                 print("Por favor, ingrese un valor válido.")
-            if instanciaAUso:
-                instanciaAUso['dispositivos'] = listaDispositivos
-            with open('db.json', 'w', encoding='utf-8') as f:
-                json.dump(data, f, indent=4)
     else:
         print("Esta instancia no tiene dispositivos añadidos.")
 
-def eliminacionDispositivo(listaDispositivos, instanciaAUso, data):
+def eliminacionDispositivo(listaDispositivos):
     if listaDispositivos != []:
-        for i, instancia in enumerate(listaDispositivos, start=1):
-            print(f"{i}. {instancia['nombreDispositivo']}")
+        for dispositivo in listaDispositivos:
+            print(f"{listaDispositivos.index(dispositivo)+1}. {dispositivo [1]}")
         try:
-            while True:
-                seleccionDispositivo = int(input("Seleccione cuál instancia desea eliminar: "))
-                if seleccionDispositivo in range (1,len(listaDispositivos)+1):
-                    dispositivoABorrar = listaDispositivos[seleccionDispositivo-1]
-                    print (f"Dipositivo {dispositivoABorrar ['nombreDispositivo']} eliminado.")
-                    listaDispositivos.remove(dispositivoABorrar)
-                    if instanciaAUso:
-                        instanciaAUso['dispositivos'] = listaDispositivos
-                    break
-                else:
-                    print("Por favor, ingrese un dispositivo válido.")
+            seleccionDispositivo = int(input("Seleccione cuál instancia desea eliminar: "))
+            if seleccionDispositivo in range (1,len(listaDispositivos)+1):
+                dispositivoABorrar = listaDispositivos[seleccionDispositivo-1]
+                print (f"Dipositivo {dispositivoABorrar [1]} eliminado.")
+                listaDispositivos.remove(dispositivoABorrar)
+            else:
+                print("Por favor, ingrese un dispositivo válido.")
         except ValueError:
             print("Por favor, ingrese un valor válido.")
-        with open('db.json', 'w', encoding='utf-8') as f:
-            json.dump(data, f, indent=4)
     else:
         print("Esta instancia no tiene dispositivos añadidos.")
 
-def controlInstancias(listaInstancias, casaAUso, data):
+def controlInstancias(listaInstancias):
     if listaInstancias != []:
-        for i, instancia in enumerate(listaInstancias, start=1):
-            print(f"{i}. {instancia['nombreInstancia']}")
+        for instancia in listaInstancias:
+            print(f"{listaInstancias.index(instancia)+1}. {instancia [0]}")
         try:
             instanciaEscogida = int(input("Seleccione cuál instancia desea controlar: "))
             if instanciaEscogida in range (1,len(listaInstancias)+1):
                 instanciaAUso = listaInstancias [instanciaEscogida-1]
-                print (f"Bienvenido a {instanciaAUso ['nombreInstancia']}.")
-                listaDispositivos = instanciaAUso ["dispositivos"]
+                print (f"Bienvenido a {instanciaAUso [0]}.")
+                listaDispositivos = instanciaAUso [1]
                 modoControlDispositivos = True
                 while modoControlDispositivos == True:
                     opcionDispositivos = input("\n1. Agregar dispositivo\n2. Actualizar dispositivo\n3. Actualizar pin de cerradura\n4. Eliminar dispositivo\n5. Salir\nSeleccione una opción: ")
                     if opcionDispositivos == "1":
-                        agregarDispositivos(listaDispositivos, instanciaAUso, data)
+                        agregarDispositivos(listaDispositivos)
                     elif opcionDispositivos == "2":
-                        actualizacionDispositivo(listaDispositivos, instanciaAUso, data)
+                        actualizacionDispositivo(listaDispositivos)
                     elif opcionDispositivos == "3":
-                        actualizacionPinCerradura(listaDispositivos, instanciaAUso, data)
+                        actualizacionPinCerradura(listaDispositivos)
                     elif opcionDispositivos == "4":
-                        eliminacionDispositivo(listaDispositivos, instanciaAUso, data)
+                        eliminacionDispositivo(listaDispositivos)
                     elif opcionDispositivos == "5":
                         modoControlDispositivos = False
                     else:
                         print("Por favor, ingrese una opción válida.")
-                if casaAUso:
-                    casaAUso['instancias'] = listaInstancias
-                with open('db.json', 'w', encoding='utf-8') as f:
-                    json.dump(data, f, indent=4)
             else:
                 print("Por favor, ingrese una instancia válida.")
         except ValueError:
@@ -264,53 +221,44 @@ def controlInstancias(listaInstancias, casaAUso, data):
         print("No tiene instancias agregadas.\nPor favor, agregue una instancia válida.")
 
 
-def controlCasas(casasUsuario, usuarioDef):
-    with open('db.json', 'r', encoding='utf-8') as f:
-        data = json.load(f)
-    if casasUsuario != []:
-        for i, casa in enumerate(casasUsuario, start=1):
-            print(f"{i}. {casa['nombreCasa']}")
+def controlCasas(listaCasas):
+    if listaCasas != []:
+        for casa in listaCasas:
+            print(f"{listaCasas.index(casa)+1}. {casa [0]}")
         try:
-            casaSeleccionada = int(input("Seleccione una casa: "))
-            if casaSeleccionada in range(1, len(casasUsuario)+1):
+            casaSeleccionada =int(input("Seleccione una casa: "))
+            if casaSeleccionada in range (1,len(listaCasas)+1):
                 modoCasa = True
-                casaAUso = casasUsuario[casaSeleccionada-1]
-                print(f"Bienvenido a {casaAUso['nombreCasa']}")
+                casaAUso = listaCasas [casaSeleccionada-1]
+                print (f"Bienvenido a {casaAUso [0]}")
                 while modoCasa == True:
                     opcionCasa = input("\n1. Controlar instancias\n2. Añadir instancias\n3. Eliminar instancias\n4. Salir\nSeleccione una opción: ")
-                    usuario = next((user for user in data['usuarios'] if user['nombre'] == usuarioDef['nombre']), None)
-                    casaAUso = next((house for house in usuario['casas'] if house['nombreCasa'] == casaAUso['nombreCasa']), None) if usuario else None
-                    listaInstancias = casaAUso['instancias']
-
+                    listaInstancias = casaAUso [1]
                     if opcionCasa == "1":
-                        controlInstancias(listaInstancias, casaAUso, data)
+                        controlInstancias(listaInstancias)
                     elif opcionCasa == "2":
-                        nombresInstancias = [instancia['nombreInstancia'] for instancia in listaInstancias]
+                        nombresInstancias = []
+                        for instancia in listaInstancias:
+                            nombresInstancias.append(instancia [0])
                         while True:
                             nombreInstancia = input("Por favor, ingrese el nombre de la instancia que desea agregar: ")
                             if nombreInstancia not in nombresInstancias: 
-                                listaInstancias.append({'nombreInstancia': nombreInstancia, 'dispositivos': []})
-                                if casaAUso:
-                                    casaAUso['instancias'] = listaInstancias
+                                listaInstancias.append ([nombreInstancia,[]])
                                 break
                             else:
                                 print("Este nombre ya está asignado a una instancia.\nPor favor, pruebe con otro nombre.")
                     elif opcionCasa == "3":
                         if listaInstancias != []:
-                            for i, instancia in enumerate(listaInstancias, start=1):
-                                print(f"{i}. {instancia['nombreInstancia']}")
+                            for instancia in listaInstancias:
+                                print(f"{listaInstancias.index(instancia)+1}. {instancia [0]}")
                             try:
-                                while True:
-                                    seleccionInstancia = int(input("Seleccione cuál instancia desea eliminar: "))
-                                    if seleccionInstancia in range(1, len(listaInstancias)+1):
-                                        instanciaABorrar = listaInstancias[seleccionInstancia-1]
-                                        print(f"Instancia {instanciaABorrar['nombreInstancia']} eliminada.")
-                                        listaInstancias.remove(instanciaABorrar)
-                                        if casa:
-                                            casa['instancias'] = listaInstancias
-                                        break
-                                    else:
-                                        print("Por favor, ingrese una instancia válida.")
+                                seleccionInstancia = int(input("Seleccione cuál instancia desea eliminar: "))
+                                instanciaABorrar = listaInstancias[seleccionInstancia-1]
+                                if seleccionInstancia in range (1,len(listaInstancias)+1):
+                                    print (f"Instancia {instanciaABorrar [0]} eliminada.")
+                                    listaInstancias.remove(instanciaABorrar)
+                                else:
+                                    print("Por favor, ingrese una instancia válida.")
                             except ValueError:
                                 print("Por favor, ingrese un valor válido.")
                         else:
@@ -320,30 +268,24 @@ def controlCasas(casasUsuario, usuarioDef):
                         break
                     else:
                         print("Por favor, seleccione una opción válida.")
-                    with open('db.json', 'w', encoding='utf-8') as f:
-                        json.dump(data, f, indent=4) ###Revisar por qué acá no hace la escritura en utf-8
             else:
-                print("Por favor, seleccione una casa válida.")
+                print ("Por favor, seleccione una casa válida.")
         except ValueError:
             print("Por favor, ingrese un valor válido.")
     else:
-        print("No hay casas registradas. Por favor, ingrese una nueva.")
+        print ("No hay casas registradas. Por favor, ingrese una nueva.")
     
-def modoUsuario():
-    with open(db, 'r', encoding='utf-8') as baseDatos:
-        base = json.load(baseDatos)
-    usuarios = base["usuarios"]
-    usuarioDef = None
-    for i, usuario in enumerate(usuarios, start=1):
-        print(f"{i}. {usuario['nombre']}")
+def modoUsuario ():
+    for i in usuarios:
+        print(f"{usuarios.index(i)+1}. {i [0]}")
     while True:
         try:
             seleccionUsuario = int(input("Por favor, seleccione con cuál usuario piensa conectarse: "))
-            if seleccionUsuario not in range(1, len(usuarios)+1):
-                print("Por favor, seleccione un usuario válido.")
+            if seleccionUsuario not in range (1, len(usuarios)+1):
+                print ("Por favor, seleccione un usuario válido.")
             else:
-                correoMatch = usuarios[seleccionUsuario-1]['correo']
-                pinMatch = usuarios[seleccionUsuario-1]['pin']
+                correoMatch = usuarios [seleccionUsuario-1] [1]
+                pinMatch = usuarios [seleccionUsuario-1] [2]
                 break
         except ValueError:
             print("Por favor, ingrese una opción válida.")
@@ -352,28 +294,32 @@ def modoUsuario():
         pinLogin = input("Ingrese su PIN: ")
         if correoMatch == correoLogin and pinMatch == pinLogin:
             print("Inicio de sesión exitoso.")
-            usuarioDef = usuarios[seleccionUsuario-1]
-            print(f"Bienvenido, {usuarioDef['nombre']}\n")
+            usuarioDef = usuarios [seleccionUsuario-1]
+            print (f"Bienvenido, {usuarioDef [0]}\n")
             break
         else:
             print("Por favor, ingrese los datos correctos.")
-    while usuarioDef != {}:
-        casasUsuario = usuarioDef['casas']
-        opcionUsuario = input("\nMenú principal: \n1. Controlar casa\n2. Registrar nueva casa\n3. Eliminar casa\n4. Salir\nSeleccione una opción: ")
+    while usuarioDef != []:
+        casasUsuario = usuarioDef[3]
+        opcionUsuario = input ("\nMenú principal: \n1. Controlar casa\n2. Registrar nueva casa\n3. Eliminar casa\n4. Salir\nSeleccione una opción: ")
         if opcionUsuario == "1":
-            controlCasas(casasUsuario, usuarioDef)
+            controlCasas(casasUsuario)
+            
         elif opcionUsuario == "2":
-            agregarCasa(usuarioDef,base)
+            agregarCasa(casasUsuario)
+            
         elif opcionUsuario == "3":
-            eliminarCasa(usuarioDef)
-        elif opcionUsuario == "4":
-            usuarioDef = {}
+            eliminarCasa(casasUsuario)
+
+        elif opcionUsuario  == "4":
+            usuarioDef[3] = casasUsuario
             break
+
         else:
             print("Por favor, ingrese una opción válida.")
 
 while True:
-    if base == {}:
+    if usuarios == []:
         agregarUsuario()
     opcion = input("\nBienvenido a la aplicación Smart Home\n1. Iniciar sesión\n2. Registrarse\n3. Salir\nSeleccione una opción: ")
     if opcion == "1":

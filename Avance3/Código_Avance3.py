@@ -107,7 +107,7 @@ def agregarDispositivos (listaDispositivos, instanciaAUso,data):
     with open(db, 'w', encoding='utf-8') as baseDatos:
         json.dump(data, baseDatos, indent=4)
 
-def actualizacionDispositivo(listaDispositivos, instanciaAUso, data): #Ver por qué no da opción de cambiar estado.
+def actualizacionDispositivo(listaDispositivos, instanciaAUso, data):
     if listaDispositivos != []:
         for dispositivo in listaDispositivos:
             nombreDispositivo = dispositivo ["nombreDispositivo"]
@@ -223,6 +223,16 @@ def eliminacionDispositivo(listaDispositivos, instanciaAUso, data):
     else:
         print("Esta instancia no tiene dispositivos añadidos.")
 
+def observacionDispositivos(listaDispositivos):
+    print ("\n")
+    if listaDispositivos != []:
+        for dispositivo in listaDispositivos:
+            nombreDispositivo = dispositivo ["nombreDispositivo"]
+            estadoDispositivo = dispositivo ["estadoDispositivo"]
+            print(f"{listaDispositivos.index(dispositivo)+1}. {nombreDispositivo} Estado: {estadoDispositivo}")
+    else:
+        print("Esta instancia no tiene dispositivos añadidos.")
+
 def controlInstancias(listaInstancias, casaAUso, data):
     if listaInstancias != []:
         for i, instancia in enumerate(listaInstancias, start=1):
@@ -235,7 +245,7 @@ def controlInstancias(listaInstancias, casaAUso, data):
                 listaDispositivos = instanciaAUso ["dispositivos"]
                 modoControlDispositivos = True
                 while modoControlDispositivos == True:
-                    opcionDispositivos = input("\n1. Agregar dispositivo\n2. Actualizar dispositivo\n3. Actualizar pin de cerradura\n4. Eliminar dispositivo\n5. Salir\nSeleccione una opción: ")
+                    opcionDispositivos = input("\n1. Agregar dispositivo\n2. Actualizar dispositivo\n3. Actualizar pin de cerradura\n4. Eliminar dispositivo\n5. Observación de dispositivos\n6. Salir\nSeleccione una opción: ")
                     if opcionDispositivos == "1":
                         agregarDispositivos(listaDispositivos, instanciaAUso, data)
                     elif opcionDispositivos == "2":
@@ -245,6 +255,8 @@ def controlInstancias(listaInstancias, casaAUso, data):
                     elif opcionDispositivos == "4":
                         eliminacionDispositivo(listaDispositivos, instanciaAUso, data)
                     elif opcionDispositivos == "5":
+                        observacionDispositivos(listaDispositivos)
+                    elif opcionDispositivos == "6":
                         modoControlDispositivos = False
                     else:
                         print("Por favor, ingrese una opción válida.")
@@ -363,7 +375,6 @@ def modoUsuario():
         elif opcionUsuario == "3":
             eliminarCasa(usuarioDef)
         elif opcionUsuario == "4":
-            usuarioDef = {}
             break
         else:
             print("Por favor, ingrese una opción válida.")
